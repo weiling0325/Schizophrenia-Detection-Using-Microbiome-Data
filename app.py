@@ -10,19 +10,18 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-icon_path = "/content/schizophrenia_icon.png"
+icon_path = "icon/schizophrenia_icon.png"
 st.set_page_config(page_title="Schizophrenia Detection", page_icon=icon_path)
-# st.set_page_config(page_title="Schizophrenia Detection", page_icon="🦠")
 
 # Load the Random Forest model with the selected features
-save_path = '/content/drive/MyDrive/FYP_Model/best_PyImpetus_random_forest_model.pkl'
+save_path = 'model/best_PyImpetus_random_forest_model.pkl'
 with open(save_path, 'rb') as file:
     data = pickle.load(file)
 rf_model = data['model']
 selected_features_with_age = data['selected_features']
 selected_bacteria_features = [feature for feature in selected_features_with_age if feature != 'age']
 
-precompute_causal_effect=pd.read_csv('/content/drive/MyDrive/Dataset/precompute_causal_effects_bacteria_diagnosis.csv')
+precompute_causal_effect=pd.read_csv('dataset/precompute_causal_effects_bacteria_diagnosis.csv')
 precompute_causal_effect.columns = ['Bacteria', 'Causal Effect']
 
 if "prediction_result" not in st.session_state:
