@@ -183,47 +183,47 @@ try:
         # Ensure the dataset contains '#OTU ID' or 'sample-id'
         patient_id_column = '#OTU ID' if '#OTU ID' in data.columns else 'sample-id'
         if patient_id_column not in data.columns:
-          st.error("No patient ID column found. Expected '#OTU ID' or 'sample-id'.")
+          st.error("No patient ID column found.")
         else:
           patient_ids = data[patient_id_column].unique()
 
-        # Check for missing bacteria features
-        missing_bacteria_features = [feature for feature in selected_bacteria_features if feature not in data.columns]
+          # Check for missing bacteria features
+          missing_bacteria_features = [feature for feature in selected_bacteria_features if feature not in data.columns]
 
-        if missing_bacteria_features:
-          st.error(f"Missing required features: {', '.join(missing_bacteria_features)}.")
-        else:
-          # Dropdown for selecting a patient ID
-          patient_id = st.selectbox("Select Patient ID", options=list(patient_ids), index=None, placeholder="Choose a Patient ID",key="patient_id", on_change=reset_age)
+          if missing_bacteria_features:
+            st.error(f"Missing required features: {', '.join(missing_bacteria_features)}.")
+          else:
+            # Dropdown for selecting a patient ID
+            patient_id = st.selectbox("Select Patient ID", options=list(patient_ids), index=None, placeholder="Choose a Patient ID",key="patient_id", on_change=reset_age)
 
-          if patient_id:
-            selected_patient_data = data[data[patient_id_column] == patient_id]
+            if patient_id:
+              selected_patient_data = data[data[patient_id_column] == patient_id]
 
-            # Check for null values in the selected patient's data
-            null_columns = selected_patient_data[selected_bacteria_features].isnull().any()
-            if null_columns.any():
-              null_features = selected_patient_data[selected_bacteria_features].columns[null_columns]
-              st.error(f"Null values found in the following bacteria columns: {', '.join(null_features)}. Please provide a file with no missing values.")
-            else:
-              # Display patient microbiome table
-              display_patient_bacteria(selected_patient_data, selected_bacteria_features)
+              # Check for null values in the selected patient's data
+              null_columns = selected_patient_data[selected_bacteria_features].isnull().any()
+              if null_columns.any():
+                null_features = selected_patient_data[selected_bacteria_features].columns[null_columns]
+                st.error(f"Null values found in the following bacteria columns: {', '.join(null_features)}. Please provide a file with no missing values.")
+              else:
+                # Display patient microbiome table
+                display_patient_bacteria(selected_patient_data, selected_bacteria_features)
 
-              # Prompt for age input
-              age = st.number_input("Enter Patient's Age", min_value=1, value=None, placeholder="Enter a whole number", key="age")
-              selected_patient_data['age'] = age
+                # Prompt for age input
+                age = st.number_input("Enter Patient's Age", min_value=1, value=None, placeholder="Enter a whole number", key="age")
+                selected_patient_data['age'] = age
 
-              # Display detect button
-              if st.button("Detect"):
-                # Validation checks
-                if st.session_state['age'] is None:
-                  st.error("Please key in the patient's age.")
-                elif st.session_state['age'] < 1:
-                  st.error("Please enter a valid age.")
-                else:
-                  # Prepare input features
-                  input_features = selected_patient_data[selected_features_with_age]
+                # Display detect button
+                if st.button("Detect"):
+                  # Validation checks
+                  if st.session_state['age'] is None:
+                    st.error("Please key in the patient's age.")
+                  elif st.session_state['age'] < 1:
+                    st.error("Please enter a valid age.")
+                  else:
+                    # Prepare input features
+                    input_features = selected_patient_data[selected_features_with_age]
 
-                  # Perform prediction
-                  predict(input_features)
+                    # Perform prediction
+                    predict(input_features)
 except Exception as e:
     st.error(f"An unexpected error occurred: {str(e)}")
