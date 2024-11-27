@@ -1,4 +1,4 @@
-**Schizophrenia Detection Using Microbiome Data, A Causal AI Approach**
+**Schizophrenia Detection Using Microbiome Data, A Causal AI Approach** \n
 The objectives of the project are:
 a. To identify a feature set of microbiomes that have a causal relationship with schizophrenia using Markov Blanket approach with causal AI
 b. To develop a Machine Learning approach for schizophrenia classification using Random Forest (RF)
