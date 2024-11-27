@@ -1,4 +1,4 @@
-#**Schizophrenia Detection Using Microbiome Data, A Causal AI Approach**#
+##**Schizophrenia Detection Using Microbiome Data, A Causal AI Approach**
 <br>
 <br>
 The objectives of the project are:
